@@ -43,11 +43,9 @@ const ContactSection = () => {
     };
   }, []);
 
-  // --- UNIVERSAL SUBMIT LOGIC (Target 1 & 2) ---
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
-    // Validation
+
     if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
       toast({ title: "Please fill in all fields", variant: "destructive" });
       return;
@@ -56,27 +54,28 @@ const ContactSection = () => {
     setSending(true);
 
     try {
-      // Formspree API call for Cross-Platform compatibility
       const response = await fetch("https://formspree.io/f/xkoqegbz", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        headers: {
+          Accept: "application/json",
+        },
+        body: new FormData(e.currentTarget),
       });
 
       if (response.ok) {
-        toast({ 
-          title: "Message Sent!", 
-          description: "Thank you, Scar. I'll get back to you soon." 
+        toast({
+          title: "Message Sent!",
+          description: "Thank you, Scar. I'll get back to you soon.",
         });
-        setForm({ name: "", email: "", message: "" }); // Reset form
+        setForm({ name: "", email: "", message: "" });
       } else {
         throw new Error("Failed to send");
       }
     } catch (error) {
-      toast({ 
-        title: "Submission Error", 
-        description: "Something went wrong. Please try again later.", 
-        variant: "destructive" 
+      toast({
+        title: "Submission Error",
+        description: "Something went wrong. Please try again later.",
+        variant: "destructive",
       });
     } finally {
       setSending(false);
@@ -98,11 +97,7 @@ const ContactSection = () => {
           <div className="w-16 h-px bg-primary/50 mx-auto" />
           <p className="text-muted-foreground">Available for Technical Consulting and Internships.</p>
 
-          {/* --- MODIFIED FORM: Formspree Implementation --- */}
-          <form 
-            onSubmit={handleSubmit} 
-            className="space-y-4 text-left"
-          >
+          <form onSubmit={handleSubmit} className="space-y-4 text-left">
             <div className="grid sm:grid-cols-2 gap-4">
               <input
                 name="name"
@@ -175,7 +170,6 @@ const ContactSection = () => {
           </div>
         </motion.div>
 
-        {/* Footer */}
         <div className="mt-20 pt-8 border-t border-border/30 text-center">
           <p className="font-mono text-xs text-muted-foreground">
             © {new Date().getFullYear()} Md. Moinul Hasan Akash — Built with precision.
