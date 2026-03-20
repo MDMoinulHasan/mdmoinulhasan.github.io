@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 const skills = [
@@ -14,6 +15,27 @@ const skills = [
 ];
 
 const SkillsSection = () => {
+  const [highlightAll, setHighlightAll] = useState(false);
+
+  useEffect(() => {
+    const onHighlight = () => {
+      setHighlightAll(true);
+      setTimeout(() => setHighlightAll(false), 1500);
+    };
+    const handleNavClick = (e: HashChangeEvent | Event) => {
+      if (window.location.hash === "#skills") {
+        setTimeout(onHighlight, 600);
+      }
+    };
+    // Listen for custom event from navbar
+    window.addEventListener("highlight-skills", onHighlight);
+    window.addEventListener("hashchange", handleNavClick);
+    return () => {
+      window.removeEventListener("highlight-skills", onHighlight);
+      window.removeEventListener("hashchange", handleNavClick);
+    };
+  }, []);
+
   return (
     <section id="skills" className="py-24 grid-bg relative">
       <div className="container mx-auto px-6">
@@ -37,9 +59,15 @@ const SkillsSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.07 }}
-              className="glass-card rounded-xl p-6 flex flex-col items-center gap-3 group cursor-default hover:glow-cyan transition-all duration-300"
+              className={`glass-card rounded-xl p-6 flex flex-col items-center gap-3 group cursor-default transition-all duration-300 ${
+                highlightAll
+                  ? "glow-cyan text-primary scale-105"
+                  : "hover:glow-cyan"
+              }`}
             >
-              <span className="text-3xl font-mono font-bold text-muted-foreground group-hover:text-primary transition-colors duration-300">
+              <span className={`text-3xl font-mono font-bold transition-colors duration-300 ${
+                highlightAll ? "text-primary" : "text-muted-foreground group-hover:text-primary"
+              }`}>
                 {skill.icon}
               </span>
               <span className="font-mono text-sm text-foreground">{skill.name}</span>
