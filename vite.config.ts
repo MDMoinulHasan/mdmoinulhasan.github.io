@@ -4,8 +4,7 @@ import path from "path"
 
 export default defineConfig({
   plugins: [react()],
-  // সরাসরি রিপোজিটরি পাথ দিয়ে দেওয়া হলো যেন কোনো কনফিউশন না থাকে
-  base: '/moinul-portfolio4/', 
+  base: '/moinul-portfolio4/', // নিশ্চিত করো শেষেও একটি / আছে
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
