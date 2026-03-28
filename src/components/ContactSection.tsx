@@ -161,7 +161,7 @@ const ContactSection = () => {
             </div>
 
             <a
-              href="mailto:akash.moinulhasan@gmail.com"
+              href="mailto:hello@mdmoinulhasan.pro.bd"
               className={`glass-button px-6 py-3 rounded-lg font-mono text-sm border-b-2 transition-all duration-300 inline-flex items-center gap-2 ${
                 highlightEmail
                   ? "text-primary border-primary glow-cyan scale-110"
@@ -169,7 +169,7 @@ const ContactSection = () => {
               }`}
             >
               <Mail size={16} />
-              akash.moinulhasan@gmail.com
+              hello@mdmoinulhasan.pro.bd
             </a>
           </div>
         </motion.div>
