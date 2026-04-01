@@ -63,17 +63,16 @@
 @layer base {
   * {
     @apply border-border;
-    /* GPU Acceleration for all elements */
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
   }
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
     background-color: hsl(240 10% 4%);
-    /* Performance Fixes */
+    /* হেডার ভিজিবল রাখতে এবং ল্যাগ কমাতে */
+    overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
     text-rendering: optimizeSpeed;
-    transform: translateZ(0);
   }
 
   .light body {
@@ -82,18 +81,16 @@
 
   html {
     scroll-behavior: smooth !important;
-    overscroll-behavior-y: none;
   }
 }
 
 @layer utilities {
   .glass-card {
     @apply bg-card/50;
-    /* Backdrop blur expensive কাজ, তাই এটি অপ্টিমাইজ করা হয়েছে */
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    /* Blur কমিয়ে আনা হয়েছে যেন ল্যাগ না করে */
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     box-shadow: inset 0 0 0 1px rgba(0, 255, 255, 0.06);
-    will-change: transform;
   }
 
   .light .glass-card {
@@ -107,23 +104,20 @@
   }
 
   .glow-cyan {
-    /* মাল্টিপল শ্যাডো কমিয়ে সিঙ্গেল শ্যাডো করা হয়েছে পারফরম্যান্সের জন্য */
-    box-shadow: 0 0 20px hsla(180, 100%, 50%, 0.2);
+    box-shadow: 0 0 15px hsla(180, 100%, 50%, 0.15);
   }
 
   .grid-bg {
-    /* গ্রিড ব্যাকগ্রাউন্ডকে fixed করে দেওয়া হয়েছে যেন স্ক্রল করার সময় এটি রি-রেন্ডার না হয় */
+    /* হেডার ঠিক রাখতে content-visibility রিমুভ করা হয়েছে */
     background-image: 
       radial-gradient(circle, hsla(180, 100%, 50%, 0.08) 1px, transparent 1px);
     background-size: 24px 24px;
-    background-attachment: fixed;
-    content-visibility: auto;
+    background-attachment: scroll;
+    z-index: -1;
   }
 
   .text-gradient {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-cyan-200;
-    /* ড্র ব্যাক কমানোর জন্য */
-    will-change: opacity;
   }
 
   @keyframes blink {
