@@ -8,36 +8,25 @@
   :root {
     --background: 240 10% 4%;
     --foreground: 0 0% 98%;
-
     --card: 240 6% 6%;
     --card-foreground: 0 0% 98%;
-
     --popover: 240 6% 6%;
     --popover-foreground: 0 0% 98%;
-
     --primary: 180 100% 50%;
     --primary-foreground: 240 10% 3.9%;
-
     --secondary: 240 4% 16%;
     --secondary-foreground: 0 0% 98%;
-
     --muted: 240 3.7% 15.9%;
     --muted-foreground: 240 5% 64.9%;
-
     --accent: 180 100% 50%;
     --accent-foreground: 240 10% 3.9%;
-
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
     --ring: 180 100% 50%;
-
     --radius: 0.75rem;
-
     --accent-glow: 180 100% 50%;
-
     --sidebar-background: 240 10% 3.9%;
     --sidebar-foreground: 0 0% 98%;
     --sidebar-primary: 180 100% 50%;
@@ -51,28 +40,20 @@
   .light {
     --background: 210 20% 98%;
     --foreground: 240 10% 3.9%;
-
     --card: 0 0% 100%;
     --card-foreground: 240 10% 3.9%;
-
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
-
     --primary: 180 80% 35%;
     --primary-foreground: 0 0% 100%;
-
     --secondary: 210 20% 93%;
     --secondary-foreground: 240 10% 3.9%;
-
     --muted: 210 20% 93%;
     --muted-foreground: 240 5% 46%;
-
     --accent: 180 80% 35%;
     --accent-foreground: 0 0% 100%;
-
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
-
     --border: 214 32% 91%;
     --input: 214 32% 91%;
     --ring: 180 80% 35%;
@@ -82,11 +63,17 @@
 @layer base {
   * {
     @apply border-border;
+    /* GPU Acceleration for all elements */
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
   }
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
     background-color: hsl(240 10% 4%);
+    /* Performance Fixes */
+    text-rendering: optimizeSpeed;
+    transform: translateZ(0);
   }
 
   .light body {
@@ -94,14 +81,19 @@
   }
 
   html {
-    scroll-behavior: smooth;
+    scroll-behavior: smooth !important;
+    overscroll-behavior-y: none;
   }
 }
 
 @layer utilities {
   .glass-card {
-    @apply bg-card/50 backdrop-blur-md;
+    @apply bg-card/50;
+    /* Backdrop blur expensive কাজ, তাই এটি অপ্টিমাইজ করা হয়েছে */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     box-shadow: inset 0 0 0 1px rgba(0, 255, 255, 0.06);
+    will-change: transform;
   }
 
   .light .glass-card {
@@ -110,39 +102,28 @@
   }
 
   .glass-button {
-    @apply bg-card/60 backdrop-blur-md text-foreground;
+    @apply bg-card/60 backdrop-blur-sm text-foreground;
     box-shadow: inset 0 0 0 1px rgba(0, 255, 255, 0.08);
   }
 
-  .light .glass-button {
-    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
-    @apply bg-card/80;
-  }
-
-  .glow-accent {
-    box-shadow: 0 0 20px hsla(180, 100%, 50%, 0.15);
-  }
-
   .glow-cyan {
-    box-shadow: 0 0 25px hsla(180, 100%, 50%, 0.3), 0 0 50px hsla(180, 100%, 50%, 0.1);
+    /* মাল্টিপল শ্যাডো কমিয়ে সিঙ্গেল শ্যাডো করা হয়েছে পারফরম্যান্সের জন্য */
+    box-shadow: 0 0 20px hsla(180, 100%, 50%, 0.2);
   }
 
   .grid-bg {
+    /* গ্রিড ব্যাকগ্রাউন্ডকে fixed করে দেওয়া হয়েছে যেন স্ক্রল করার সময় এটি রি-রেন্ডার না হয় */
     background-image: 
       radial-gradient(circle, hsla(180, 100%, 50%, 0.08) 1px, transparent 1px);
     background-size: 24px 24px;
-  }
-
-  .light .grid-bg {
-    background-image: radial-gradient(circle, rgba(0,0,0,0.05) 1px, transparent 1px);
+    background-attachment: fixed;
+    content-visibility: auto;
   }
 
   .text-gradient {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-cyan-200;
-  }
-
-  .light .text-gradient {
-    @apply from-primary to-cyan-600;
+    /* ড্র ব্যাক কমানোর জন্য */
+    will-change: opacity;
   }
 
   @keyframes blink {
