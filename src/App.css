@@ -1,52 +1,19 @@
-/* ১. স্মুথ স্ক্রলিং এবং পারফরম্যান্স বুস্ট */
-html {
-  scroll-behavior: smooth !important;
-}
-* {
-  box-sizing: border-box;
-}
-
-body {
-  /* স্ক্রল ল্যাগ কমাতে এবং টাচ রেসপন্স ফাস্ট করতে */
-  touch-action: pan-y;
-  -webkit-overflow-scrolling: touch;
-}
-
-#root {
-  /* হার্ডওয়্যার এক্সিলারেশন এনাবল করে */
-  transform: translateZ(0);
-  backface-visibility: hidden;
-}
-
-body {
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden; /* সাইড স্ক্রলিং বন্ধ করে ল্যাগ কমাবে */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
 #root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
-  /* ল্যাগ কমানোর জন্য GPU এক্সিলারেশন */
-  will-change: transform;
 }
 
-/* ২. ডিফল্ট লোগো সেকশন */
 .logo {
   height: 6em;
   padding: 1.5em;
   will-change: filter;
   transition: filter 300ms;
 }
-
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
-
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
@@ -72,13 +39,4 @@ body {
 
 .read-the-docs {
   color: #888;
-}
-
-/* ৩. ইমেজগুলোর জন্য অপ্টিমাইজেশন (খুবই জরুরি) */
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-  /* লোড হওয়ার সময় হুট করে লেআউট পাল্টানো বন্ধ করে */
-  content-visibility: auto; 
 }

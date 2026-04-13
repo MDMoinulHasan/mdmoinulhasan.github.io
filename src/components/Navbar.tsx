@@ -1,141 +1,146 @@
-import { useState, useEffect } from "react";
-import { motion, useScroll } from "framer-motion";
-import { Menu, X, Sun, Moon } from "lucide-react";
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
+import { useBrand } from '@/contexts/BrandContext';
+import { ThemeToggle } from '@/components/ThemeToggle';
+import {
+  Bell, LogOut, User, ChevronDown, Shield,
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { notifications } from '@/data/mockData';
+import {
+  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator
+} from '@/components/ui/dropdown-menu';
 
-const navLinks = [
-  { label: "Home", href: "#home" },
-  { label: "About", href: "#about" },
-  { label: "Services", href: "#services" },
-  { label: "Skills", href: "#skills" },
-  { label: "Projects", href: "#projects" },
-  { label: "Journey", href: "#journey" },
-  { label: "Achievements", href: "#achievements" },
-  { label: "Blog", href: "#blog" },
-  { label: "Contact", href: "#contact" },
-];
+interface NavbarProps {
+  onToggleSidebar?: () => void;
+  sidebarOpen?: boolean;
+}
 
-const Navbar = () => {
-  const [open, setOpen] = useState(false);
-  const [dark, setDark] = useState(true);
-  const { scrollYProgress } = useScroll();
+export function Navbar({ onToggleSidebar, sidebarOpen }: NavbarProps) {
+  const { user, isAuthenticated, isDemo, logout } = useAuth();
+  const { brand } = useBrand();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const unreadCount = notifications.filter(n => !n.read).length;
 
-  useEffect(() => {
-    document.documentElement.classList.toggle("dark", dark);
-    document.documentElement.classList.toggle("light", !dark);
-  }, [dark]);
+  const isPublicRoute = ['/', '/login', '/request-access', '/about'].includes(location.pathname);
 
   return (
-    <>
-      <motion.nav
-        initial={{ y: -40, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-        className="fixed top-0 left-0 right-0 z-50 glass-card border-b border-border/50"
-      >
-        <div className="container mx-auto flex items-center justify-between h-16 px-6">
-          <a href="#home" onClick={(e) => { e.preventDefault(); window.location.reload(); }} className="font-mono text-sm tracking-tight font-semibold">
-            <span className="text-primary">Moinul</span>
-            <span className="text-muted-foreground"> Hasan</span>
-          </a>
-
-          <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                onClick={(e) => {
-                  if (link.href === "#contact") {
-                    e.preventDefault();
-                    document.getElementById("contact-channels")?.scrollIntoView({ behavior: "smooth", block: "center" });
-                    setTimeout(() => {
-                      window.dispatchEvent(new CustomEvent("highlight-all-contacts"));
-                    }, 400);
-                  } else if (link.href === "#skills") {
-                    setTimeout(() => {
-                      window.dispatchEvent(new CustomEvent("highlight-skills"));
-                    }, 600);
-                  }
-                }}
-                className="font-mono text-xs text-muted-foreground hover:text-primary transition-colors duration-200"
-              >
-                {link.label}
-              </a>
-            ))}
-            <button
-              onClick={() => setDark(!dark)}
-              className="text-muted-foreground hover:text-primary transition-colors duration-200"
-              aria-label="Toggle theme"
-            >
-              {dark ? <Sun size={16} /> : <Moon size={16} />}
-            </button>
-            <a
-              href="#contact"
-              className="bg-primary text-primary-foreground px-4 py-2 rounded-lg font-mono text-xs font-semibold hover:opacity-90 transition-opacity duration-200"
-            >
-              Hire Me
-            </a>
-          </div>
-
-          <div className="flex md:hidden items-center gap-3">
-            <button
-              onClick={() => setDark(!dark)}
-              className="text-muted-foreground hover:text-foreground"
-              aria-label="Toggle theme"
-            >
-              {dark ? <Sun size={18} /> : <Moon size={18} />}
-            </button>
-            <button
-              onClick={() => setOpen(!open)}
-              className="text-muted-foreground hover:text-foreground"
-            >
-              {open ? <X size={20} /> : <Menu size={20} />}
-            </button>
-          </div>
-        </div>
-
-        {/* Scroll progress bar */}
-        <motion.div
-          className="absolute bottom-0 left-0 h-[2px] bg-primary origin-left"
-          style={{ scaleX: scrollYProgress }}
-        />
-
-        {open && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            className="md:hidden glass-card border-t border-border/50 px-6 py-4 flex flex-col gap-4"
-          >
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                onClick={(e) => {
-                  setOpen(false);
-                  if (link.href === "#contact") {
-                    e.preventDefault();
-                    document.getElementById("contact-channels")?.scrollIntoView({ behavior: "smooth", block: "center" });
-                    setTimeout(() => window.dispatchEvent(new CustomEvent("highlight-all-contacts")), 400);
-                  } else if (link.href === "#skills") {
-                    setTimeout(() => window.dispatchEvent(new CustomEvent("highlight-skills")), 600);
-                  }
-                }}
-                className="font-mono text-sm text-muted-foreground hover:text-primary transition-colors"
-              >
-                {link.label}
-              </a>
-            ))}
-            <a
-              href="#contact"
-              onClick={() => setOpen(false)}
-              className="bg-primary text-primary-foreground px-4 py-2 rounded-lg font-mono text-sm font-semibold text-center hover:opacity-90 transition-opacity"
-            >
-              Hire Me
-            </a>
-          </motion.div>
+    <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-xl">
+      <div className="flex h-16 items-center px-4 md:px-6">
+        {/* Sidebar toggle for private routes */}
+        {isAuthenticated && !isPublicRoute && (
+          <button onClick={onToggleSidebar} className="mr-3 p-2 rounded-lg hover:bg-secondary transition-colors">
+            <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+          </button>
         )}
-      </motion.nav>
-    </>
-  );
-};
 
-export default Navbar;
+        {/* Logo */}
+        <Link to={isAuthenticated ? '/dashboard' : '/'} className="flex items-center gap-2 mr-6">
+          <span className="text-2xl leading-none">{brand.logo}</span>
+          <span className="font-serif text-xl font-bold tracking-tight hidden sm:block">
+            {brand.communityName}— {brand.communityNameBn}
+          </span>
+        </Link>
+
+        {/* Public nav links */}
+        {!isAuthenticated && (
+          <nav className="hidden md:flex items-center gap-1 flex-1">
+            {[
+              { to: '/', label: 'Home' },
+              { to: '/about', label: 'About' },
+            ].map(link => (
+              <Link
+                key={link.to}
+                to={link.to}
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  location.pathname === link.to
+                    ? 'text-primary bg-primary/10'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-secondary'
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+        )}
+
+        <div className="flex-1" />
+
+        {/* Demo banner */}
+        {isDemo && (
+          <div className="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 mr-3">
+            <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            <span className="text-xs font-medium text-primary">Demo Mode</span>
+          </div>
+        )}
+
+        {/* Theme toggle */}
+        <ThemeToggle />
+
+        {isAuthenticated ? (
+          <div className="flex items-center gap-2">
+            {/* Notifications */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="relative p-2 rounded-lg hover:bg-secondary transition-colors">
+                  <Bell className="h-5 w-5 text-muted-foreground" />
+                  {unreadCount > 0 && (
+                    <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center font-bold">
+                      {unreadCount}
+                    </span>
+                  )}
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-80 bg-card border-border">
+                <div className="px-3 py-2 border-b border-border">
+                  <p className="font-semibold text-sm">Notifications</p>
+                </div>
+                {notifications.slice(0, 5).map(n => (
+                  <DropdownMenuItem key={n.id} className="flex flex-col items-start gap-1 p-3 cursor-pointer">
+                    <span className="text-sm font-medium">{n.title}</span>
+                    <span className="text-xs text-muted-foreground">{n.message}</span>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/* User menu */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-secondary transition-colors">
+                  <img src={user?.avatar} alt={user?.name} className="w-8 h-8 rounded-full object-cover ring-2 ring-primary/20" />
+                  <ChevronDown className="h-4 w-4 text-muted-foreground hidden sm:block" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56 bg-card border-border">
+                <div className="px-3 py-2">
+                  <p className="text-sm font-semibold">{user?.name}</p>
+                  <p className="text-xs text-muted-foreground capitalize">{user?.role}</p>
+                </div>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => navigate('/profile')} className="cursor-pointer">
+                  <User className="mr-2 h-4 w-4" /> Profile
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => { logout(); navigate('/'); }} className="cursor-pointer text-destructive">
+                  <LogOut className="mr-2 h-4 w-4" /> Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        ) : (
+          <div className="flex items-center gap-2">
+            <Button variant="ghost" size="sm" onClick={() => navigate('/login')} className="text-muted-foreground hover:text-foreground">
+              <Shield className="mr-1.5 h-3.5 w-3.5" /> Admin Login
+            </Button>
+          </div>
+        )}
+      </div>
+    </header>
+  );
+}
