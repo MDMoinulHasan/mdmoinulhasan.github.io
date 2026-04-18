@@ -6,14 +6,16 @@ import taxImg from "@/assets/project-tax.jpg";
 import cricketImg from "@/assets/project-cricket.jpg";
 import voboghureImg from "@/assets/voboghure-hero.png.jpeg";
 
-const projects = [
+// 📍 Added 'export' so StatsBar can dynamically count projects
+export const projects = [
   {
     title: "Voboghure - Multi-Community Ecosystem",
+    // 📍 New description based on your engineering work in Voboghure
     description: "Architected and engineered a full-stack SaaS-style platform for multi-community management. Features Role-Based Access Control (RBAC), secure Supabase authentication, and real-time database-trigger notifications.",
     tags: ["React & TypeScript", "Supabase", "Auth", "RBAC", "Full Stack"],
     icon: Network, 
     liveLink: "https://voboghure.vercel.app/",
-    // 📍 GitHub link removed as it's a private repo
+    // 📍 GitHub link removed as it's a private repo per your instruction
     image: voboghureImg,
   },
   {
@@ -21,6 +23,7 @@ const projects = [
     description: "A robust backend system built with SQL. Features include complex CRUD operations, advanced relational database design, and optimized data querying for financial records.",
     tags: ["SQL", "Database Design", "CRUD", "Backend"],
     icon: Database,
+    // 📍 Integrated your GitHub repository link
     githubLink: "https://github.com/hellomoinul/Tax-Management-System",
     image: taxImg,
   },
@@ -29,6 +32,7 @@ const projects = [
     description: "A cross-platform mobile application developed using Flutter and Dart, focusing on a seamless user interface and real-time data handling for sports enthusiasts.",
     tags: ["Flutter", "Dart", "Mobile", "UI/UX"],
     icon: Smartphone,
+    // 📍 Integrated your GitHub repository link
     githubLink: "https://github.com/hellomoinul/fantasy_cricket_app",
     image: cricketImg,
   },
@@ -50,6 +54,7 @@ const ProjectsSection = () => {
           <div className="w-16 h-px bg-primary/50 mx-auto" />
         </motion.div>
 
+        {/* 📍 Grid layout optimized for 3 projects */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-[1200px] mx-auto">
           {projects.map((project, i) => (
             <motion.div
@@ -65,9 +70,11 @@ const ProjectsSection = () => {
                   src={project.image}
                   alt={project.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  // 📍 Added cinematic filter for a professional look
                   style={{ filter: "grayscale(10%) contrast(105%)" }}
                 />
                 
+                {/* 📍 Added Hover Overlay with Dynamic Button Logic */}
                 <div className="absolute inset-0 bg-black/70 z-20 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-3 p-4">
                   {project.liveLink && (
                     <a 
