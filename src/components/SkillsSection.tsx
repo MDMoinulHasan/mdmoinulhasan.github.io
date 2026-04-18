@@ -1,14 +1,15 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
-const skills = [
-  // 📍 Full-Stack & Modern Web (Newly Added from Voboghure)
+// 📍 Added 'export' so StatsBar can dynamically count your total technologies
+export const skills = [
+  // 📍 Full-Stack & Modern Web (Directly showcasing skills used in Voboghure)
   { name: "React", icon: "⚛️" },
   { name: "TypeScript", icon: "TS" },
   { name: "Supabase", icon: "⚡" },
   { name: "PostgreSQL", icon: "🐘" },
-  { name: "RBAC & Auth", icon: "🔐" }, // Roles & Permissions logic
-  { name: "RLS", icon: "🛡️" },         // Row Level Security
+  { name: "RBAC & Auth", icon: "🔐" }, // Roles & Permissions logic identified from your project
+  { name: "RLS", icon: "🛡️" },         // Row Level Security expertise
 
   // Existing Core Skills
   { name: "C", icon: "C" },
@@ -59,7 +60,7 @@ const SkillsSection = () => {
           <div className="w-16 h-px bg-primary/50 mx-auto" />
         </motion.div>
 
-        {/* 📍 Updated grid structure to handle more skills gracefully */}
+        {/* 📍 Responsive Grid: Updated to 5 columns on large screens to accommodate new skills */}
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-6 max-w-5xl mx-auto">
           {skills.map((skill, i) => (
             <motion.div
@@ -84,7 +85,7 @@ const SkillsSection = () => {
           ))}
         </div>
 
-        {/* Consulting badge */}
+        {/* 📍 Professional Identity: Reinforcing your role as a Technical Consultant */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
