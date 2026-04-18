@@ -13,7 +13,7 @@ const projects = [
     tags: ["React & TypeScript", "Supabase", "Auth", "RBAC", "Full Stack"],
     icon: Network, 
     liveLink: "https://voboghure.vercel.app/",
-    githubLink: "https://github.com/hellomoinul/voboghure", 
+    // 📍 GitHub link removed as it's a private repo
     image: voboghureImg,
   },
   {
@@ -21,7 +21,7 @@ const projects = [
     description: "A robust backend system built with SQL. Features include complex CRUD operations, advanced relational database design, and optimized data querying for financial records.",
     tags: ["SQL", "Database Design", "CRUD", "Backend"],
     icon: Database,
-    githubLink: "https://github.com/hellomoinul/Tax-Management-System", // 📍 Integrated
+    githubLink: "https://github.com/hellomoinul/Tax-Management-System",
     image: taxImg,
   },
   {
@@ -29,7 +29,7 @@ const projects = [
     description: "A cross-platform mobile application developed using Flutter and Dart, focusing on a seamless user interface and real-time data handling for sports enthusiasts.",
     tags: ["Flutter", "Dart", "Mobile", "UI/UX"],
     icon: Smartphone,
-    githubLink: "https://github.com/hellomoinul/fantasy_cricket_app", // 📍 Integrated
+    githubLink: "https://github.com/hellomoinul/fantasy_cricket_app",
     image: cricketImg,
   },
 ];
@@ -60,7 +60,6 @@ const ProjectsSection = () => {
               transition={{ delay: i * 0.15, duration: 0.5 }}
               className="glass-card rounded-xl overflow-hidden group relative flex flex-col h-full"
             >
-              {/* Image Section with Overlay Buttons */}
               <div className="aspect-video overflow-hidden relative">
                 <img
                   src={project.image}
@@ -69,7 +68,6 @@ const ProjectsSection = () => {
                   style={{ filter: "grayscale(10%) contrast(105%)" }}
                 />
                 
-                {/* Interaction Overlay: Visible on Hover */}
                 <div className="absolute inset-0 bg-black/70 z-20 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-3 p-4">
                   {project.liveLink && (
                     <a 
@@ -94,7 +92,6 @@ const ProjectsSection = () => {
                 </div>
               </div>
 
-              {/* Content Section */}
               <div className="p-6 space-y-4 flex-grow flex flex-col justify-between">
                 <div>
                   <div className="flex items-center gap-3 mb-3">
